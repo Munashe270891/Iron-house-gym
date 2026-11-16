@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron House Gym - Harare | Stronger Every Day</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-brand: #dc2626;
+      --color-brand-dark: #991b1b;
+      --color-gold: #facc15;
+      --color-dark: #111827;
+    }
+    @custom-variant dark (&:where(.dark, .dark *));
+    @layer components {
+      .btn-primary { @apply bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg font-semibold transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500; }
+      .btn-gold { @apply bg-yellow-400 hover:bg-yellow-300 text-gray-900 px-4 py-2.5 rounded-lg font-semibold transition active:scale-95; }
+      .btn-dark { @apply bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-lg font-semibold transition; }
+      .input { @apply w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white; }
+      .label { @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1; }
+      .card { @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col; }
+      .badge { @apply inline-block px-2 py-1 rounded-full text-xs font-bold; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white min-h-screen">
+
+  <!-- HEADER -->
+  <header class="bg-white dark:bg-gray-800 shadow sticky top-0 z-20">
+    <nav class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+      <h1 class="text-2xl font-extrabold">🏋️ IRON <span class="text-red-600">HOUSE</span></h1>
+      <div class="flex flex-wrap gap-4 items-center text-sm font-medium">
+        <a href="#plans" class="hover:text-red-600">Plans</a>
+        <a href="#classes" class="hover:text-red-600">Classes</a>
+        <a href="#trainers" class="hover:text-red-600">Trainers</a>
+        <a href="#bmi" class="hover:text-red-600">BMI</a>
+        <span id="openNowBadge" class="badge bg-gray-200">Checking...</span>
+        <button id="myBookingsBtn" class="relative btn-dark">My Bookings <span id="bookingCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span></button>
+        <button id="darkModeBtn" class="btn-primary">🌙 Dark</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="hero" class="relative bg-cover bg-center text-white" style="background-image:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600')">
+      <div class="absolute inset-0 bg-black/60"></div>
+      <div class="relative max-w-7xl mx-auto px-4 py-16 md:py-24 text-center">
+        <span class="inline-block bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">🔥 First Visit FREE - Day Pass</span>
+        <h2 class="text-5xl md:text-7xl font-extrabold leading-tight mt-4">Stronger<br>Every Day.</h2>
+        <p class="text-lg md:text-xl mt-4 text-gray-200 max-w-2xl mx-auto">Harare's hardest working gym. 24/7 access, expert trainers, classes for beginners to pros. No excuses.</p>
+        <p id="weatherWidget" class="inline-block mt-4 bg-white/90 text-gray-900 px-4 py-2 rounded-full text-sm font-medium">Loading Harare weather...</p>
+        <p id="quoteWidget" class="mt-3 italic text-gray-200">"No pain, no gain." - <button id="newQuoteBtn" class="underline font-bold">New Quote ↻</button></p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+          <button onclick="document.querySelector('#join').scrollIntoView({behavior:'smooth'})" class="btn-primary text-base px-8 py-3">Join Now - From $30/mo</button>
+          <button onclick="document.querySelector('#classes').scrollIntoView({behavior:'smooth'})" class="btn-gold text-base px-8 py-3">View Classes</button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 max-w-3xl mx-auto">
+          <div class="bg-white/10 backdrop-blur p-4 rounded-xl"><p class="text-3xl font-extrabold">500+</p><p class="text-sm">Members</p></div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-xl"><p class="text-3xl font-extrabold">5</p><p class="text-sm">Expert Trainers</p></div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-xl"><p class="text-3xl font-extrabold">8</p><p class="text-sm">Classes / Week</p></div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-xl"><p class="text-3xl font-extrabold">24/7</p><p class="text-sm">Access</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANS -->
+    <section id="plans" class="max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold">Membership Plans</h2>
+      <p class="text-gray-600 dark:text-gray-300 mt-2">No hidden fees. Cancel anytime. Students get 10% off with ID.</p>
+      <div class="flex flex-col md:flex-row gap-3 mt-6 items-center">
+        <label class="label mb-0">Billing Period:</label>
+        <select id="billingPeriod" class="input md:w-64">
+          <option value="1">1 Month - Pay Monthly</option>
+          <option value="3">3 Months - 5% Off</option>
+          <option value="6">6 Months - 10% Off</option>
+          <option value="12">12 Months - 20% Off + 1 Month FREE</option>
+        </select>
+        <span class="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold">Save more with longer plans</span>
+      </div>
+      <div id="plansGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6"></div>
+    </section>
+
+    <!-- CLASSES -->
+    <section id="classes" class="max-w-7xl mx-auto px-4 py-12 bg-white dark:bg-gray-800 rounded-2xl my-6">
+      <div class="flex flex-col md:flex-row justify-between md:items-center gap-3">
+        <h2 class="text-3xl font-bold">Classes - Weekly Timetable</h2>
+        <button id="toggleViewBtn" class="btn-dark text-sm">Switch to Table View</button>
+      </div>
+      <div class="flex flex-col md:flex-row gap-3 mt-6">
+        <input id="classSearch" placeholder="Search classes... e.g. Yoga, Boxing" class="input flex-1">
+        <select id="classFilterIntensity" class="input md:w-40"><option value="All">All Intensity</option><option value="Low">Low</option><option value="Medium">Medium</option><option value="High">High</option></select>
+        <select id="classFilterDay" class="input md:w-40"><option value="All">All Days</option><option value="Mon">Mon</option><option value="Tue">Tue</option><option value="Wed">Wed</option><option value="Thu">Thu</option><option value="Fri">Fri</option><option value="Sat">Sat</option><option value="Sun">Sun</option></select>
+        <select id="classFilterCategory" class="input md:w-44"><option value="All">All Categories</option><option value="Cardio">Cardio</option><option value="Strength">Strength</option><option value="Mind & Body">Mind & Body</option><option value="Dance">Dance</option></select>
+      </div>
+      <label class="flex items-center gap-2 mt-3 text-sm font-medium cursor-pointer"><input id="beginnerOnly" type="checkbox" class="w-4 h-4"> Beginner Friendly Only</label>
+      <div id="classesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"></div>
+      <div id="classesTableWrap" class="hidden mt-6 overflow-x-auto">
+        <table class="w-full text-sm min-w-[700px]"><thead><tr class="bg-gray-100 dark:bg-gray-700"><th class="p-3 text-left">Class</th><th class="p-3 text-left">Trainer</th><th class="p-3 text-left">Day</th><th class="p-3 text-left">Time</th><th class="p-3 text-left">Spots</th><th class="p-3 text-left">Action</th></tr></thead><tbody id="classesTableBody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- TRAINERS -->
+    <section id="trainers" class="max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold">Meet Your Trainers</h2>
+      <select id="trainerFilter" class="input md:w-64 mt-4"><option value="All">All Specialties</option><option value="Boxing">Boxing</option><option value="Yoga">Yoga</option><option value="Strength">Strength</option><option value="Spin">Spin</option><option value="Zumba">Zumba</option></select>
+      <div id="trainersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"></div>
+    </section>
+
+    <!-- PT -->
+    <section id="pt" class="max-w-7xl mx-auto px-4 py-12 bg-gray-900 text-white rounded-2xl">
+      <h2 class="text-3xl font-bold">Personal Training - 1-on-1</h2>
+      <p class="text-gray-300 mt-2">Get a custom plan, faster results. Choose a pack, we match you with a trainer.</p>
+      <div id="ptGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6"></div>
+      <p class="text-sm text-gray-400 mt-4">Time slots: 06:00, 07:00, 08:00, 17:00, 18:00, 19:00 • Book via Join Form or WhatsApp 0772 123 456</p>
+    </section>
+
+    <!-- BMI -->
+    <section id="bmi" class="max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold">BMI Calculator - Know Where You Start</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <form id="bmiForm" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+          <div><label class="label">Weight (kg)</label><input name="weight" type="number" step="0.1" placeholder="e.g. 80" class="input" required></div>
+          <div><label class="label">Height (cm)</label><input name="height" type="number" placeholder="e.g. 175" class="input" required></div>
+          <div><label class="label">Age</label><input name="age" type="number" placeholder="e.g. 24" class="input"></div>
+          <div><label class="label">Your Goal</label><select name="goal" class="input"><option value="Lose Weight">Lose Weight</option><option value="Gain Muscle">Gain Muscle</option><option value="Stay Fit">Stay Fit</option><option value="General Health">General Health</option></select></div>
+          <button class="btn-primary w-full py-3">Calculate BMI</button>
+        </form>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+          <h3 class="font-bold">Your Result</h3>
+          <div id="bmiResult" class="mt-3 text-lg">Enter weight + height to see BMI</div>
+          <div id="bmiRecommendation" class="mt-3 text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">Recommendation will appear here.</div>
+          <div class="mt-4 text-xs space-y-1"><p><span class="font-bold text-blue-600">Underweight:</span> &lt;18.5</p><p><span class="font-bold text-green-600">Normal:</span> 18.5 - 24.9</p><p><span class="font-bold text-amber-600">Overweight:</span> 25 - 29.9</p><p><span class="font-bold text-red-600">Obese:</span> 30+</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOIN -->
+    <section id="join" class="max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold">Join Iron House</h2>
+      <form id="joinForm" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg max-w-2xl mt-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="label">Full Name *</label><input name="fullName" class="input" required></div>
+          <div><label class="label">Phone *</label><input name="phone" placeholder="0772123456" class="input" required></div>
+        </div>
+        <div><label class="label">Email *</label><input name="email" type="email" class="input" required></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="label">Plan</label><select name="planId" class="input"></select></div>
+          <div><label class="label">Duration</label><select name="months" class="input"><option value="1">1 Month</option><option value="3">3 Months - 5% off</option><option value="6">6 Months - 10% off</option><option value="12">12 Months - 20% off + 1 Free</option></select></div>
+        </div>
+        <div><label class="label">Start Date</label><input name="startDate" type="date" class="input"></div>
+        <div><label class="label">Emergency Contact (Name + Phone)</label><input name="emergencyContact" placeholder="e.g. Chipo - 0772..." class="input" required></div>
+        <label class="flex items-center gap-2 text-sm"><input name="hasMedicalCondition" type="checkbox" class="w-4 h-4"> I have a medical condition (we will contact you)</label>
+        <p id="joinPricePreview" class="bg-amber-100 dark:bg-amber-900/30 border border-amber-400 p-3 rounded-lg font-bold text-sm">Select plan to see price</p>
+        <p id="joinError" class="text-red-600 font-bold min-h-5"></p>
+        <button type="submit" class="btn-primary w-full py-3 text-base">Join Now</button>
+      </form>
+    </section>
+
+    <!-- MY BOOKINGS -->
+    <section id="myBookings" class="max-w-7xl mx-auto px-4 py-12">
+      <div class="flex flex-col md:flex-row justify-between md:items-center gap-3">
+        <h2 class="text-3xl font-bold">My Bookings</h2>
+        <div class="flex gap-2">
+          <select id="bookingFilter" class="input md:w-48"><option value="All">All Types</option><option value="Membership">Membership</option><option value="Class">Class</option><option value="PT">PT</option></select>
+          <button id="clearBookingsBtn" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm">Clear All</button>
+        </div>
+      </div>
+      <div id="bookingsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6"></div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold">Real Results, Real People</h2>
+      <div id="testimonialGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6"></div>
+    </section>
+  </main>
+
+  <footer class="bg-gray-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div><h3 class="font-bold text-xl">IRON HOUSE</h3><p class="text-gray-400 text-sm mt-2">45 Samora Machel Ave, Harare • 0772 123 456 • hello@ironhouse.co.zw</p></div>
+      <div><h3 class="font-bold">Opening Hours</h3><p class="text-gray-400 text-sm mt-2">Mon-Fri: 05:00 - 21:00<br>Sat: 06:00 - 18:00<br>Sun: 07:00 - 12:00</p></div>
+      <div><h3 class="font-bold">Quick Links</h3><p class="text-gray-400 text-sm mt-2"><a href="#plans" class="hover:text-white">Plans</a> • <a href="#classes" class="hover:text-white">Classes</a> • <a href="#trainers" class="hover:text-white">Trainers</a></p></div>
+    </div>
+    <p class="text-center text-gray-500 text-sm mt-8">© 2026 Iron House Gym Harare. All rights reserved.</p>
+  </footer>
+
+  <!-- CLASS MODAL -->
+  <div id="classModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6 relative">
+      <button id="closeModalBtn" class="absolute top-3 right-3 text-2xl leading-none">×</button>
+      <h3 id="modalClassName" class="text-xl font-bold">Class</h3>
+      <p id="modalClassInfo" class="text-sm text-gray-600 dark:text-gray-300 mt-1"></p>
+      <form id="classBookingForm" class="space-y-4 mt-4">
+        <div><label class="label">Your Name *</label><input name="memberName" class="input" required></div>
+        <div><label class="label">Phone *</label><input name="memberPhone" placeholder="0772123456" class="input" required></div>
+        <div><label class="label">Class Date *</label><input name="classDate" type="date" class="input" required></div>
+        <button class="btn-primary w-full py-3">Book Spot</button>
+      </form>
+    </div>
+  </div>
+
+  <button id="scrollTopBtn" class="hidden fixed bottom-6 right-6 bg-red-600 text-white w-12 h-12 rounded-full shadow-lg text-xl z-30">↑</button>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
